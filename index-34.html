@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#123b82">
+<title>OMKAR SIR - PR GURUKUL</title>
+<style>
+:root{--blue:#123b82;--blue2:#1d5bd1;--bg:#f3f6fc;--text:#172033;--muted:#64748b;--line:#dbe4f0;--green:#12804a;--red:#c62828}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+header{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;padding:22px 16px;text-align:center}
+header h1{font-size:23px;margin:0 0 6px}header p{margin:4px 0;font-size:14px}
+main{max-width:900px;margin:16px auto;padding:0 12px 30px}.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0;box-shadow:0 3px 12px #152b4d0a}
+h2{font-size:18px;margin:0 0 12px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.stat{padding:14px;border-radius:12px;background:#eaf1ff}.stat b{display:block;font-size:24px;color:var(--blue);margin-top:5px}
+label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px}input,select,button{font:inherit}input,select{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:9px;background:#fff}
+button{border:0;border-radius:9px;padding:11px 13px;background:var(--blue2);color:#fff;font-weight:bold;cursor:pointer;margin-top:10px}
+button.secondary{background:#e7edf8;color:var(--blue)}button.danger{background:var(--red)}button.green{background:var(--green)}
+.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1;min-width:120px}.hidden{display:none!important}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;padding:9px 6px;border-bottom:1px solid var(--line);vertical-align:top}th{background:#f5f8ff}
+.small{font-size:12px;color:var(--muted);line-height:1.5}.notice{background:#fff7db;border:1px solid #f0d77c;padding:10px;border-radius:9px;font-size:12px;line-height:1.5}
+#login{max-width:430px;margin:28px auto}.pill{display:inline-block;background:#e3f5e9;color:#126438;padding:4px 8px;border-radius:20px;font-size:12px}
+@media(max-width:540px){.grid{grid-template-columns:1fr 1fr}header h1{font-size:20px}table{font-size:12px}.hide-mobile{display:none}}
+</style>
+</head>
+<body>
+<header>
+<h1>OMKAR SIR – PR GURUKUL</h1>
+<p><b>Director:</b> OMKAR SIR</p>
+<p><b>Teachers:</b> SANDEEP KUMAR • MITHILESH AGARWAL</p>
+</header>
+<main>
+<section id="login" class="card">
+<h2 id="loginTitle">Owner Login / PIN सेट करें</h2>
+<p class="small" id="loginHelp">पहली बार 4 से 8 अंकों का PIN बनाइए। अगली बार यही PIN लगेगा।</p>
+<label for="pin">Owner PIN</label><input id="pin" type="password" inputmode="numeric" maxlength="8" placeholder="4–8 अंकों का PIN">
+<button id="loginBtn" class="green" style="width:100%" onclick="login()">PIN सेट करें / Login</button>
+<p class="small">यह शुरुआती संस्करण इस मोबाइल के ब्राउज़र में डेटा सेव करता है। इसे सुरक्षित ऑनलाइन डेटाबेस न समझें।</p>
+</section>
+<section id="app" class="hidden">
+<div class="card">
+<div class="row" style="align-items:center"><div><h2 style="margin-bottom:4px">Owner Dashboard</h2><span class="pill">Local data</span></div><button class="secondary" onclick="logout()">Logout</button></div>
+<div class="grid" style="margin-top:12px">
+<div class="stat">कुल विद्यार्थी<b id="totalStudents">0</b></div>
+<div class="stat">कुल फीस बाकी<b id="totalDue">₹0</b></div>
+</div>
+</div>
+<div class="card">
+<h2>विद्यार्थी जोड़ें</h2>
+<div class="row"><div><label>विद्यार्थी का नाम *</label><input id="sname" placeholder="जैसे: Rahul Kumar"></div><div><label>मोबाइल नंबर</label><input id="smobile" inputmode="numeric" placeholder="मोबाइल नंबर"></div></div>
+<div class="row"><div><label>कक्षा / बैच</label><input id="sclass" placeholder="जैसे: BCA / Class 10"></div><div><label>कुल फीस (₹)</label><input id="stotal" type="number" min="0" value="5000"></div></div>
+<label>जमा फीस (₹)</label><input id="spaid" type="number" min="0" value="0">
+<button onclick="addStudent()">+ विद्यार्थी सेव करें</button>
+</div>
+<div class="card">
+<h2>फीस जमा करें</h2>
+<label>विद्यार्थी चुनें</label><select id="feeStudent"></select>
+<label>जमा राशि (₹)</label><input id="feeAmount" type="number" min="1" placeholder="जैसे: 500">
+<button class="green" onclick="addFee()">फीस जमा करें</button>
+</div>
+<div class="card">
+<h2>आज की उपस्थिति</h2>
+<label>विद्यार्थी चुनें</label><select id="attStudent"></select>
+<label>स्थिति</label><select id="attStatus"><option>Present / उपस्थित</option><option>Absent / अनुपस्थित</option></select>
+<button onclick="markAttendance()">उपस्थिति सेव करें</button>
+<p class="small" id="attToday"></p>
+</div>
+<div class="card">
+<h2>विद्यार्थियों की सूची</h2>
+<label>नाम से खोजें</label><input id="search" placeholder="नाम खोजें..." oninput="renderStudents()">
+<div style="overflow-x:auto;margin-top:10px"><table><thead><tr><th>नाम</th><th>कक्षा</th><th>कुल फीस</th><th>जमा</th><th>बाकी</th><th>कार्य</th></tr></thead><tbody id="studentRows"></tbody></table></div>
+</div>
+<div class="card">
+<h2>फीस / उपस्थिति इतिहास</h2>
+<div id="history" class="small">अभी कोई रिकॉर्ड नहीं है।</div>
+</div>
+<div class="card">
+<h2>Backup और Restore</h2>
+<p class="small">Backup फ़ाइल डाउनलोड करके सुरक्षित रखें। मोबाइल/ब्राउज़र का डेटा मिटने पर बैकअप से वापस ला सकते हैं।</p>
+<div class="row"><button class="secondary" onclick="backup()">Backup डाउनलोड करें</button><button class="secondary" onclick="document.getElementById('restoreFile').click()">Backup Restore करें</button></div>
+<input id="restoreFile" class="hidden" type="file" accept=".json,application/json" onchange="restoreBackup(event)">
+<button class="secondary" onclick="changePin()">PIN बदलें</button>
+<button class="danger" onclick="clearAll()">सारा डेटा मिटाएँ</button>
+<div class="notice">महत्वपूर्ण: यह एक single-device demo है। PIN स्क्रीन केवल सामान्य लॉक है; तकनीकी जानकारी रखने वाला व्यक्ति ब्राउज़र डेटा तक पहुँच सकता है। वास्तविक छात्र डेटा के लिए सुरक्षित server/login और नियमित backup आवश्यक हैं।</div>
+</div>
+</section>
+</main>
+<script>
+const DATA_KEY='omkar_gurukul_data_v1', PIN_KEY='omkar_gurukul_pin_v1', SESSION_KEY='omkar_gurukul_session_v1';
+let db={students:[],history:[]};
+function load(){try{db=JSON.parse(localStorage.getItem(DATA_KEY))||{students:[],history:[]};if(!Array.isArray(db.students))db.students=[];if(!Array.isArray(db.history))db.history=[];}catch(e){db={students:[],history:[]}}}
+function save(){localStorage.setItem(DATA_KEY,JSON.stringify(db));render()}
+function money(n){return '₹'+Number(n||0).toLocaleString('en-IN')}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function login(){let p=document.getElementById('pin').value;let old=localStorage.getItem(PIN_KEY);if(!old){if(!/^\d{4,8}$/.test(p)){alert('PIN 4 से 8 अंकों का होना चाहिए।');return}localStorage.setItem(PIN_KEY,p);localStorage.setItem(SESSION_KEY,'yes');openApp();alert('PIN सेट हो गया। इसे याद रखें।')}else if(p===old){localStorage.setItem(SESSION_KEY,'yes');openApp()}else alert('गलत PIN।')}
+function openApp(){document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');render()}
+function logout(){localStorage.removeItem(SESSION_KEY);document.getElementById('app').classList.add('hidden');document.getElementById('login').classList.remove('hidden');document.getElementById('pin').value=''}
+function addStudent(){let name=document.getElementById('sname').value.trim();let total=Number(document.getElementById('stotal').value||0),paid=Number(document.getElementById('spaid').value||0);if(!name){alert('विद्यार्थी का नाम लिखें।');return}if(total<0||paid<0||paid>total){alert('फीस की राशि सही भरें। जमा फीस कुल फीस से अधिक नहीं हो सकती।');return}let s={id:Date.now().toString(),name,mobile:document.getElementById('smobile').value.trim(),klass:document.getElementById('sclass').value.trim(),total,paid};db.students.push(s);if(paid>0)db.history.unshift({date:new Date().toLocaleString('hi-IN'),student:name,type:'Initial fee',amount:paid});['sname','smobile','sclass'].forEach(id=>document.getElementById(id).value='');document.getElementById('stotal').value='5000';document.getElementById('spaid').value='0';save();alert('विद्यार्थी सेव हो गया।')}
+function addFee(){let s=db.students.find(x=>x.id===document.getElementById('feeStudent').value),amount=Number(document.getElementById('feeAmount').value);if(!s){alert('पहले विद्यार्थी जोड़ें।');return}if(amount<=0||!Number.isFinite(amount)){alert('सही राशि लिखें।');return}if(s.paid+amount>s.total&&!confirm('यह भुगतान कुल फीस से अधिक होगा। फिर भी जारी रखें?'))return;s.paid+=amount;db.history.unshift({date:new Date().toLocaleString('hi-IN'),student:s.name,type:'Fee payment',amount});document.getElementById('feeAmount').value='';save();alert('फीस जमा हो गई।')}
+function markAttendance(){let s=db.students.find(x=>x.id===document.getElementById('attStudent').value);if(!s){alert('पहले विद्यार्थी जोड़ें।');return}db.history.unshift({date:new Date().toLocaleString('hi-IN'),student:s.name,type:'Attendance: '+document.getElementById('attStatus').value,amount:0});save();alert('उपस्थिति सेव हो गई।')}
+function delStudent(id){let s=db.students.find(x=>x.id===id);if(s&&confirm(s.name+' को सूची से हटाएँ?')){db.students=db.students.filter(x=>x.id!==id);save()}}
+function renderStudents(){let q=(document.getElementById('search')?.value||'').toLowerCase();let list=db.students.filter(s=>s.name.toLowerCase().includes(q)||s.klass.toLowerCase().includes(q));document.getElementById('studentRows').innerHTML=list.map(s=>`<tr><td>${esc(s.name)}<br><span class="small">${esc(s.mobile)}</span></td><td>${esc(s.klass)}</td><td>${money(s.total)}</td><td>${money(s.paid)}</td><td>${money(s.total-s.paid)}</td><td><button class="danger" style="margin:0;padding:7px" onclick="delStudent('${s.id}')">हटाएँ</button></td></tr>`).join('')||'<tr><td colspan="6">कोई विद्यार्थी नहीं मिला।</td></tr>'}
+function render(){document.getElementById('totalStudents').textContent=db.students.length;document.getElementById('totalDue').textContent=money(db.students.reduce((a,s)=>a+Math.max(0,s.total-s.paid),0));let opts='<option value="">विद्यार्थी चुनें</option>'+db.students.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join('');document.getElementById('feeStudent').innerHTML=opts;document.getElementById('attStudent').innerHTML=opts;renderStudents();document.getElementById('history').innerHTML=db.history.slice(0,60).map(h=>`<div style="padding:8px 0;border-bottom:1px solid #dbe4f0"><b>${esc(h.student)}</b> — ${esc(h.type)} ${h.amount?'<b>'+money(h.amount)+'</b>':''}<br>${esc(h.date)}</div>`).join('')||'अभी कोई रिकॉर्ड नहीं है।';document.getElementById('attToday').textContent='आज की तारीख: '+new Date().toLocaleDateString('hi-IN')}
+function backup(){let blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='omkar-gurukul-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500)}
+function restoreBackup(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!Array.isArray(x.students)||!Array.isArray(x.history))throw Error();if(confirm('मौजूदा डेटा की जगह बैकअप डेटा लोड करें?')){db=x;save();alert('Backup restore हो गया।')}}catch(err){alert('यह सही OMKAR GURUKUL backup JSON नहीं है।')}e.target.value=''};r.readAsText(f)}
+function changePin(){let old=prompt('पुराना PIN लिखें');if(old!==localStorage.getItem(PIN_KEY)){alert('पुराना PIN गलत है।');return}let p=prompt('नया PIN (4–8 अंक) लिखें');if(!/^\d{4,8}$/.test(p||'')){alert('नया PIN 4 से 8 अंकों का होना चाहिए।');return}localStorage.setItem(PIN_KEY,p);alert('PIN बदल गया।')}
+function clearAll(){if(prompt('सारा डेटा मिटाने के लिए DELETE लिखें')==='DELETE'){db={students:[],history:[]};save();alert('डेटा मिटा दिया गया।')}}
+load();if(localStorage.getItem(PIN_KEY)&&localStorage.getItem(SESSION_KEY)==='yes')openApp();
+</script>
+</body>
+</html>
